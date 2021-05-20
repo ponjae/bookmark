@@ -37,7 +37,9 @@ function storeBookmark(e) {
         urlValue = `https://${urlValue}`;
     }
     const valid = formValidator(urlValue);
-
+    if (!valid) {
+        return false;
+    }
 }
 
 bookmarkForm.addEventListener('submit', storeBookmark);
