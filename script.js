@@ -6,6 +6,9 @@ const websiteNameElem = document.getElementById('website-name');
 const websiteUrlElem = document.getElementById('website-url');
 const bookmarksContainer = document.getElementById('bookmarks-container');
 
+
+let bookmarks = [];
+
 function showModal() {
     modal.classList.add('show-modal');
     websiteNameElem.focus();
@@ -14,7 +17,6 @@ function showModal() {
 modalShow.addEventListener('click', showModal);
 modalClose.addEventListener('click', () => {
     modal.classList.remove('show-modal');
-    bookmarkForm.reset();
 });
 window.addEventListener('click', (e) => (e.target) === modal ? modal.classList.remove('show-modal') : false);
 
@@ -29,6 +31,21 @@ function formValidator(url) {
     }
 }
 
+function fetchBookmarks() {
+    if (localStorage.getItem('bookmarks')) {
+        bookmarks = JSON.parse(localStorage.getItem('bookmarks'));
+    } else {
+        bookmarks = [
+            {
+                name: 'Google',
+                url: 'https://www.google.com/'
+            }
+        ];
+        localStorage.setItem('bookmarks', JSON.stringify(bookmarks))
+    }
+}
+
+
 function storeBookmark(e) {
     e.preventDefault();
     const nameValue = websiteNameElem.value;
@@ -40,7 +57,17 @@ function storeBookmark(e) {
     if (!valid) {
         return false;
     }
+    const bookmark = {
+        name: nameValue,
+        url: urlValue
+    };
+    bookmarks.push(bookmark)
+    localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+    fetchBookmarks();
+    bookmarkForm.reset();
+    websiteNameElem.focus();
 }
 
 bookmarkForm.addEventListener('submit', storeBookmark);
 
+fetchBookmarks();
