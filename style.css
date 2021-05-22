@@ -73,7 +73,7 @@ a:active {
 .fa-times-circle {
     float: right;
     cursor: pointer;
-    z-index: 0;
+    z-index: 2; /* Might want to change this if in the future..*/
 }
 
 .name {
